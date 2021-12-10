@@ -89,16 +89,10 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         for(int i = 0; i < balls.size()-1; i++){
             for(int n = i+1; n < balls.size(); n++){
                 if(Intersector.overlaps(balls.get(i), balls.get(n)) && balls.get(i).getInteract() && balls.get(n).getInteract()){
-                    float yDiff = balls.get(i).y - balls.get(n).y;
-                    float xDiff = balls.get(i).x - balls.get(n).x;
-                    float percentOfBall = yDiff / RADIUS;
-                    if(xDiff<0){
-                        balls.get(i).setAngle(-45 + (percentOfBall * 90));
-                        balls.get(n).setAngle(225 - (percentOfBall * 90));
-                    }else{
-                        balls.get(n).setAngle(-45 + (percentOfBall * 90));
-                        balls.get(i).setAngle(225 - (percentOfBall * 90));
-                    }
+                    float iAngle = balls.get(i).getAngle();
+                    float nAngle = balls.get(n).getAngle();
+                    balls.get(i).setAngle(iAngle - nAngle);
+                    balls.get(n).setAngle(nAngle - iAngle);
                 }
             }
         }
