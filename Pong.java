@@ -89,11 +89,15 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         for(int i = 0; i < balls.size()-1; i++){
             for(int n = i+1; n < balls.size(); n++){
                 if(Intersector.overlaps(balls.get(i), balls.get(n)) && balls.get(i).getInteract() && balls.get(n).getInteract()){
-                    float yDiff = balls.get(i).y - balls.get(n).y;
-                    float xDiff = balls.get(i).x - balls.get(n).x;
-                    float percentOfBall = yDiff / RADIUS;
-                    float tangentLineSlope = -1/(yDiff/xDiff);
-                    float tangentLineAngle = (float)Math.atan(tangentLineSlope);
+                    Vector2 iCenter = new Vector2(balls.get(i).x + RADIUS/2,balls.get(i).y + RADIUS/2);
+                    Vector2 nCenter = new Vector2(balls.get(n).x + RADIUS/2,balls.get(n).y + RADIUS/2);
+                    float yDiff = Math.abs(iCenter.y-nCenter.y);
+                    float xDiff = Math.abs(iCenter.x-iCenter.x);
+                    float yIntersect = RADIUS*2-yDiff;
+                    float xIntersect = RADIUS*2-xDiff;
+                    float yIntersectPercent = yIntersect/RADIUS;
+                    float xIntersectPercent = xIntersect/RADIUS;
+                    
                     
                 }
             }
