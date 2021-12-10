@@ -94,10 +94,12 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                         float nAngle = balls.get(n).getAngle();
                         balls.get(i).setAngle(iAngle - nAngle);
                         balls.get(n).setAngle(nAngle - iAngle);
+                        tracker = false;
                     }
                 }
+                
             }
-            tracker = false;
+            
         }
         //if the game has started adjust the position
         //of the ball based on the ball angle
