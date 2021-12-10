@@ -86,17 +86,19 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        for(int i = 0; i < balls.size()-1; i++){
-            for(int n = i+1; n < balls.size(); n++){
-                if(Intersector.overlaps(balls.get(i), balls.get(n)) && balls.get(i).getInteract() && balls.get(n).getInteract()){
-                    float iAngle = balls.get(i).getAngle();
-                    float nAngle = balls.get(n).getAngle();
-                    balls.get(i).setAngle(iAngle - nAngle);
-                    balls.get(n).setAngle(nAngle - iAngle);
+        if(tracker){
+            for(int i = 0; i < balls.size()-1; i++){
+                for(int n = i+1; n < balls.size(); n++){
+                    if(Intersector.overlaps(balls.get(i), balls.get(n)) && balls.get(i).getInteract() && balls.get(n).getInteract()){
+                        float iAngle = balls.get(i).getAngle();
+                        float nAngle = balls.get(n).getAngle();
+                        balls.get(i).setAngle(iAngle - nAngle);
+                        balls.get(n).setAngle(nAngle - iAngle);
+                    }
                 }
             }
+            tracker = false;
         }
-
         //if the game has started adjust the position
         //of the ball based on the ball angle
         if(started)
@@ -141,13 +143,15 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
             timer.start();
         }
-        
-        //TODO add a total 4 if statements to not let the paddles
-        //move off the screen. You can access the
-        //bottom left coordinate of the paddles like this:
-        //leftPaddle.x and leftPaddle.y 
-        //You will need the constants PADDLE_HEIGHT
-        //WORLD_HEIGHT
+        if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+            tracker = true;
+        }
+            //TODO add a total 4 if statements to not let the paddles
+            //move off the screen. You can access the
+            //bottom left coordinate of the paddles like this:
+            //leftPaddle.x and leftPaddle.y 
+            //You will need the constants PADDLE_HEIGHT
+            //WORLD_HEIGHT
         if(leftPaddle.y>WORLD_HEIGHT-PADDLE_HEIGHT){
             leftPaddle.y = WORLD_HEIGHT - PADDLE_HEIGHT;
         }
