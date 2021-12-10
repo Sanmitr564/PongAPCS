@@ -18,7 +18,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import java.util.*;
-
+//edit to test git
 public class Pong extends ApplicationAdapter//A Pong object ___________ ApplicationAda
 {
     private OrthographicCamera camera; //the camera to our world
