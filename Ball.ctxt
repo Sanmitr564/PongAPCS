@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Ball
+comment1.params=
+comment1.target=Ball()
+comment10.params=b
+comment10.target=void\ setInteract(boolean)
+comment11.params=
+comment11.target=boolean\ getInteract()
+comment2.params=circle\ angle\ canInteract
+comment2.target=Ball(com.badlogic.gdx.math.Circle,\ float,\ boolean)
+comment3.params=x\ y\ radius\ angle\ canInteract
+comment3.target=Ball(float,\ float,\ float,\ float,\ boolean)
+comment4.params=position\ radius\ angle\ canInteract
+comment4.target=Ball(com.badlogic.gdx.math.Vector2,\ float,\ float,\ boolean)
+comment5.params=center\ edge\ angle\ canInteract
+comment5.target=Ball(com.badlogic.gdx.math.Vector2,\ com.badlogic.gdx.math.Vector2,\ float,\ boolean)
+comment6.params=
+comment6.target=float\ getAngle()
+comment7.params=n
+comment7.target=void\ setAngle(float)
+comment8.params=n
+comment8.target=void\ addAngle(float)
+comment9.params=n
+comment9.target=void\ multiplyAngle(float)
+numComments=12
