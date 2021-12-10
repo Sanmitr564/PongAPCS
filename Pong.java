@@ -52,6 +52,8 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
     private int order;
     private int roundNumber;
 
+    private boolean tracker;
+
     @Override//called once when the game is started (kind of like our constructor)
     public void create(){
         camera = new OrthographicCamera(); //camera for our world, it is not moving
@@ -63,15 +65,16 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         balls = new ArrayList<Ball>();
 
         balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false)); 
-        //balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
-        //balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
-        
+        balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
+        balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
+
         leftPaddle = new Rectangle(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT); 
         rightPaddle = new Rectangle(WORLD_WIDTH - PADDLE_WIDTH, WORLD_HEIGHT / 2 - PADDLE_HEIGHT / 2,
             PADDLE_WIDTH, PADDLE_HEIGHT);
         order = 0;
         timer = new Stopwatch();
         roundNumber = -1;
+        tracker = true;
     }
 
     @Override//this is called 60 times a second, all the drawing is in here, or helper
@@ -82,15 +85,14 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         //the screen won't have overlapping images
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        
+
         for(int i = 0; i < balls.size()-1; i++){
             for(int n = i+1; n < balls.size(); n++){
                 if(Intersector.overlaps(balls.get(i), balls.get(n)) && balls.get(i).getInteract() && balls.get(n).getInteract()){
                     float yDiff = balls.get(i).y - balls.get(n).y;
                     float xDiff = balls.get(i).x - balls.get(n).x;
                     float percentOfBall = yDiff / RADIUS;
-                    if(xDiff>0){
+                    if(xDiff<0){
                         balls.get(i).setAngle(-45 + (percentOfBall * 90));
                         balls.get(n).setAngle(225 - (percentOfBall * 90));
                     }else{
@@ -100,7 +102,7 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 }
             }
         }
-        
+
         //if the game has started adjust the position
         //of the ball based on the ball angle
         if(started)
@@ -145,7 +147,7 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
             timer.start();
         }
-
+        
         //TODO add a total 4 if statements to not let the paddles
         //move off the screen. You can access the
         //bottom left coordinate of the paddles like this:
@@ -235,7 +237,7 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 break;
             }
         }
-        
+
         //draw everything on the screen with our renderer
         //draw each object based on its attributes
         renderer.setProjectionMatrix(viewport.getCamera().combined);
