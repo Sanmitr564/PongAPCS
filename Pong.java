@@ -46,11 +46,13 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
     public static final float PADDLE_SPEED = 10;
     public static final float BALL_SPEED = 10;
     public static final int DELAY = 120;
+    public static final int SLOW_TIME = 60;
 
     private ArrayList<Ball> balls;
     private Stopwatch timer;
     private int order;
     private int roundNumber;
+    private Stopwatch slowTimer;
 
     private boolean tracker;
 
@@ -77,6 +79,7 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
             PADDLE_WIDTH, PADDLE_HEIGHT);
         order = 0;
         timer = new Stopwatch();
+        slowTimer = new Stopwatch(true, SLOW_TIME);
         roundNumber = -1;
         tracker = true;
     }
@@ -97,8 +100,13 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
             for(Ball ball: balls){
                 if(order*DELAY>timer.getTime())
                     break;
-                ball.x += BALL_SPEED * MathUtils.cosDeg(ball.getAngle());//cosine gets the change in x distance
-                ball.y += BALL_SPEED * MathUtils.sinDeg(ball.getAngle()); //sine gets the change in y distance
+                if(slowTimer.getTime()<SLOW_TIME){
+                    ball.x += BALL_SPEED/2 * MathUtils.cosDeg(ball.getAngle());//cosine gets the change in x distance
+                    ball.y += BALL_SPEED/2 * MathUtils.sinDeg(ball.getAngle()); //sine gets the change in y distance
+                }else{
+                    ball.x += BALL_SPEED * MathUtils.cosDeg(ball.getAngle());
+                    ball.y += BALL_SPEED * MathUtils.sinDeg(ball.getAngle());
+                }
                 ball.setInteract(true);
                 order++;
             }
@@ -130,12 +138,25 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         {
             roundNumber++;
             started = true;  
-            if(roundNumber!=0 && roundNumber%3==0)
+            if(roundNumber!=0 && roundNumber%3==0){
                 balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
+                rightSlows = balls.size();
+                leftSlows = balls.size();
+            }
             timer.start();
 
         }
 
+        if(Gdx.input.isKeyJustPressed(Keys.SHIFT_RIGHT) && rightSlows>0){
+            rightSlows--;
+            slowTimer.reset();
+            slowTimer.start();
+        }
+        if(Gdx.input.isKeyJustPressed(Keys.SHIFT_LEFT) && leftSlows>0){
+            leftSlows--;
+            slowTimer.reset();
+            slowTimer.start();
+        }
         //TODO add a total 4 if statements to not let the paddles
         //move off the screen. You can access the
         //bottom left coordinate of the paddles like this:
@@ -258,13 +279,14 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 WORLD_WIDTH / 2 - layout.width / 2, 
                 WORLD_HEIGHT/2 + layout.height / 2 + 20);
         }
-        
+
         font.draw(batch, player1Score + ":" + player2Score, WORLD_WIDTH / 2 - 20, 440); 
-        font.draw(batch, rightSlowsRemaining, 10, WORLD_HEIGHT - rightSlowsRemaining.height/2);
-        font.draw(batch, leftSlowsRemaining, WORLD_WIDTH - leftSlowsRemaining.width-10, WORLD_HEIGHT - leftSlowsRemaining.height/2);
-        
+        font.draw(batch, leftSlowsRemaining, 10, WORLD_HEIGHT - leftSlowsRemaining.height/2);
+        font.draw(batch, rightSlowsRemaining, WORLD_WIDTH - rightSlowsRemaining.width-10, WORLD_HEIGHT - rightSlowsRemaining.height/2);
+
         batch.end(); 
         timer.update();
+        slowTimer.update();
     }
 
     @Override

@@ -7,6 +7,10 @@ class Stopwatch{
         time = 0;
     }
     
+    public Stopwatch(boolean isRunning, int time){
+        this.isRunning = isRunning;
+        this.time = time;
+    }
     public void start(){
         isRunning = true;
     }
