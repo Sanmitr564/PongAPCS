@@ -54,6 +54,9 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
 
     private boolean tracker;
 
+    private int rightSlows;
+    private int leftSlows;
+
     @Override//called once when the game is started (kind of like our constructor)
     public void create(){
         camera = new OrthographicCamera(); //camera for our world, it is not moving
@@ -65,7 +68,9 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         balls = new ArrayList<Ball>();
 
         balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false)); 
-        
+
+        rightSlows = 1;
+        leftSlows = 1;
 
         leftPaddle = new Rectangle(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT); 
         rightPaddle = new Rectangle(WORLD_WIDTH - PADDLE_WIDTH, WORLD_HEIGHT / 2 - PADDLE_HEIGHT / 2,
@@ -85,7 +90,6 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        
         //if the game has started adjust the position
         //of the ball based on the ball angle
         if(started)
@@ -129,6 +133,7 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
             if(roundNumber!=0 && roundNumber%3==0)
                 balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
             timer.start();
+
         }
 
         //TODO add a total 4 if statements to not let the paddles
@@ -205,6 +210,8 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 timer.reset();
                 player2Score++;
                 ball.setAngle(0);
+                rightSlows = balls.size();
+                leftSlows = balls.size();
                 break;
             }
 
@@ -216,7 +223,9 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                 started = false;
                 timer.reset();
                 player1Score++;
-                ball.setAngle(0);    
+                ball.setAngle(0);  
+                rightSlows = balls.size();
+                leftSlows = balls.size();
                 break;
             }
         }
@@ -239,6 +248,8 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         renderer.end();
 
         GlyphLayout layout = new GlyphLayout(font, "Press SPACE_BAR to start");
+        GlyphLayout rightSlowsRemaining = new GlyphLayout(font, "Slows: " + rightSlows);
+        GlyphLayout leftSlowsRemaining = new GlyphLayout(font, "Slows: " + leftSlows);
         batch.begin();
         if(!started)
         {
@@ -246,10 +257,12 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
             font.draw(batch, layout, 
                 WORLD_WIDTH / 2 - layout.width / 2, 
                 WORLD_HEIGHT/2 + layout.height / 2 + 20);
-
         }
-
+        
         font.draw(batch, player1Score + ":" + player2Score, WORLD_WIDTH / 2 - 20, 440); 
+        font.draw(batch, rightSlowsRemaining, 10, WORLD_HEIGHT - rightSlowsRemaining.height/2);
+        font.draw(batch, leftSlowsRemaining, WORLD_WIDTH - leftSlowsRemaining.width-10, WORLD_HEIGHT - leftSlowsRemaining.height/2);
+        
         batch.end(); 
         timer.update();
     }
