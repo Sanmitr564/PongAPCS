@@ -136,13 +136,9 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
         //start the game
         if(Gdx.input.isKeyJustPressed(Keys.SPACE) && !started)
         {
-            roundNumber++;
+
             started = true;  
-            if(roundNumber!=0 && roundNumber%3==0){
-                balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
-                rightSlows = balls.size();
-                leftSlows = balls.size();
-            }
+
             timer.start();
 
         }
@@ -228,7 +224,13 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                     ballReset.setInteract(false);
                 }
                 started = false;
+                roundNumber++;
                 timer.reset();
+                if(roundNumber!=0 && roundNumber%3==0){
+                    balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
+                    rightSlows = balls.size();
+                    leftSlows = balls.size();
+                }
                 player2Score++;
                 ball.setAngle(0);
                 rightSlows = balls.size();
@@ -242,7 +244,13 @@ public class Pong extends ApplicationAdapter//A Pong object ___________ Applicat
                     ballReset.setInteract(false);
                 }
                 started = false;
+                roundNumber++;
                 timer.reset();
+                if(roundNumber!=0 && roundNumber%3==0){
+                    balls.add(new Ball(WORLD_WIDTH / 2 - RADIUS, WORLD_HEIGHT / 2 - RADIUS, RADIUS, 0, false));
+                    rightSlows = balls.size();
+                    leftSlows = balls.size();
+                }
                 player1Score++;
                 ball.setAngle(0);  
                 rightSlows = balls.size();
